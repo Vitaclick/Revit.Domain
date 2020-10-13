@@ -1,0 +1,53 @@
+{
+  "RsnServerList": {
+    "2017": [
+      "vpp-revit01",
+      "vpp-revit02",
+      "vpp-revit03",
+      "vpp-revit04",
+      "vpp-revit05",
+      "vpp-revit06",
+      "vpp-revit17_btr",
+      "vpp-revittest01"
+    ],
+    "2019": [
+      "vpp-revit19_1",
+      "vpp-revit19_2",
+      "vpp-revit19_3",
+      "vpp-revit19_4k",
+      "vpp-revit19_4n",
+      "vpp-revit19_5",
+      "vpp-revit19_6",
+      "vpp-revit19_7",
+      "vpp-revit19_8",
+      "vpp-revit19_11",
+      "vpp-revit19_12",
+      "vpp-revit19_13",
+      "vpp-revit19_14",
+      "vpp-revit19_15",
+      "vpp-revit19_16",
+      "vpp-revit19_17",
+      "vpp-revit19_dp",
+      "vpp-revit19_btr",
+      "vpp-revit19_mod",
+      "vpp-revit19_skb",
+      "vpp-revit19_t1",
+      "vpp-revit19_ekb",
+      "vpp-revit19_nsb",
+      "vpp-revit19_rst",
+      "vpp-revit19_spb",
+      "192.168.1.71",
+      "rsnserv"
+    ]
+  },
+  "RsnServerRegex": {
+    "2017": [
+      "vpp-revit\\d*",
+      "vpp-revit17_.*"
+    ],
+    "2019": [
+      "vpp-revit19_.*",
+      "\\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b"
+    ]
+  } 
+}
