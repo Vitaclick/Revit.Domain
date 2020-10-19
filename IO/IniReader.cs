@@ -7,8 +7,10 @@ namespace Revit.Domain.IO
   {
     [DllImport("kernel32")]
     private static extern long WritePrivateProfileString(string section, string key, string val, string filePath);
+
     [DllImport("kernel32")]
-    private static extern int GetPrivateProfileString(string section, string key, string def, StringBuilder retVal, int size, string filePath);
+    private static extern int GetPrivateProfileString(string section, string key, string def, StringBuilder retVal,
+      int size, string filePath);
 
     public static void WriteValue(string path, string Section, string Key, string Value)
     {
@@ -17,8 +19,8 @@ namespace Revit.Domain.IO
 
     public static string ReadValue(string path, string Section, string Key)
     {
-      StringBuilder temp = new StringBuilder(255);
-      int i = GetPrivateProfileString(Section, Key, "", temp, 255, path);
+      var temp = new StringBuilder(255);
+      var i = GetPrivateProfileString(Section, Key, "", temp, 255, path);
       return temp.ToString();
     }
   }

@@ -14,7 +14,7 @@ namespace Revit.Domain.RevitServer
 {
   public static class RsnHelper
   {
-    public static readonly string[] possibleRsnProjectFolders = { "prj", "project", "projects", "prg" };
+    public static readonly string[] possibleRsnProjectFolders = {"prj", "project", "projects", "prg"};
 
     public static Dictionary<int, List<string>> rsnServerListFromConfigFile()
     {
@@ -33,7 +33,7 @@ namespace Revit.Domain.RevitServer
       var assembly = Assembly.GetExecutingAssembly();
       var asll = assembly.GetManifestResourceNames();
       var embeddedResourcePathName = $"{assembly.GetName().Name}.{resourceName}";
-      using (Stream resourceStream = assembly.GetManifestResourceStream(embeddedResourcePathName))
+      using (var resourceStream = assembly.GetManifestResourceStream(embeddedResourcePathName))
       {
         if (resourceStream == null)
           return null;
@@ -61,7 +61,7 @@ namespace Revit.Domain.RevitServer
     public static string ExtractServerNameWithoutDomain(this string path)
     {
       // todo: check possible overtype json query error with \\ or \
-      var splittedPath = path.ToLower().Split(new[] { '\\' }, StringSplitOptions.RemoveEmptyEntries);
+      var splittedPath = path.ToLower().Split(new[] {'\\'}, StringSplitOptions.RemoveEmptyEntries);
 
       if (splittedPath[0] == "RSN:") splittedPath = splittedPath.Skip(1).ToArray();
 
@@ -69,10 +69,8 @@ namespace Revit.Domain.RevitServer
 
       // check if server contains domain name
       var domainName = Regex.Match(serverName, @"\.[a-zA-Z]+");
-      if (domainName.Success){
-        //splittedPath[0].Contains('.'))
+      if (domainName.Success) //splittedPath[0].Contains('.'))
         serverName = serverName.Substring(0, serverName.LastIndexOf(domainName.Value));
-      }
 
       return serverName;
     }
@@ -80,9 +78,9 @@ namespace Revit.Domain.RevitServer
     public static string ExtractProjectFilePath(this string path)
     {
       var splittedPath = path
-        .Split(new[] { '\\' }, StringSplitOptions.RemoveEmptyEntries);
+        .Split(new[] {'\\'}, StringSplitOptions.RemoveEmptyEntries);
 
-      var rsnServers = rsnServerListFromConfigFile()??RsnServerListFromResources("RsnServers.json");
+      var rsnServers = rsnServerListFromConfigFile() ?? RsnServerListFromResources("RsnServers.json");
       if (rsnServers == null)
         throw new Exception("Cannot find Revit server config file");
       var projectSiteIndex = splittedPath.ToList().FindLastIndex(p =>
@@ -145,11 +143,9 @@ namespace Revit.Domain.RevitServer
       if (revitFiles.Count != 0)
       {
         revitFiles.RemoveAt(0);
-        foreach (var filePathInfo in revitFiles)
-        {
-          fileOutput.Add(filePathInfo.FullName);
-        }
+        foreach (var filePathInfo in revitFiles) fileOutput.Add(filePathInfo.FullName);
       }
+
       return fileOutput;
     }
 
@@ -160,26 +156,24 @@ namespace Revit.Domain.RevitServer
       {
         if (rootDir.Name.EndsWith(".rvt")) yield break;
         foreach (var dir in rootDir.EnumerateDirectories())
-          foreach (var subDir in GetFolderDirectories(dir, depth - 1))
-            if (subDir.Name.EndsWith(".rvt"))
-              yield return subDir;
+        foreach (var subDir in GetFolderDirectories(dir, depth - 1))
+          if (subDir.Name.EndsWith(".rvt"))
+            yield return subDir;
       }
     }
+
     public static string ConvertNetworkToRsnPath_Old(this string path)
     {
       if (path.CanBeParsedToRsnPath())
       {
-        var splittedPath = path.Split(new[] { '\\' }, StringSplitOptions.RemoveEmptyEntries);
+        var splittedPath = path.Split(new[] {'\\'}, StringSplitOptions.RemoveEmptyEntries);
 
-        if (splittedPath[0] == "RSN:")
-        {
-          splittedPath = splittedPath.Skip(1).ToArray();
-        }
+        if (splittedPath[0] == "RSN:") splittedPath = splittedPath.Skip(1).ToArray();
 
         var server = splittedPath[0];
         server = server.Replace(".main.picompany.ru", "");
 
-        int projectSiteIndex = splittedPath.ToList().FindIndex(p => Regex.IsMatch(p, @"^\d\d\d\d"));
+        var projectSiteIndex = splittedPath.ToList().FindIndex(p => Regex.IsMatch(p, @"^\d\d\d\d"));
 
         var projectPath = splittedPath.Skip(projectSiteIndex).ToList();
 
@@ -191,16 +185,10 @@ namespace Revit.Domain.RevitServer
 
         if (compiledPath.IsValidPathForRsn())
           return compiledPath;
-        else
-        {
-          throw new ArgumentException("Путь не пригоден для создания ссылки на модель RSN");
-        }
-      }
-      else
-      {
-        return null;
+        throw new ArgumentException("Путь не пригоден для создания ссылки на модель RSN");
       }
 
+      return null;
     }
   }
 }

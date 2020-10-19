@@ -11,7 +11,7 @@ namespace Revit.Domain.Ex_Old
     {
       var baseElements = new FilteredElementCollector(document)
         .WherePasses(new LogicalOrFilter(
-          new List<ElementFilter>()
+          new List<ElementFilter>
           {
             new ElementCategoryFilter(BuiltInCategory.OST_Grids),
             new ElementCategoryFilter(BuiltInCategory.OST_Levels)
@@ -24,6 +24,7 @@ namespace Revit.Domain.Ex_Old
       // Unique worksets
       return new HashSet<string>(worksetsOfBaseElements);
     }
+
     public static IEnumerable<string> FindNestedLinks(Document document)
     {
       var col = new FilteredElementCollector(document)
@@ -32,16 +33,13 @@ namespace Revit.Domain.Ex_Old
 
       var nestedLinks = new List<RevitLinkInstance>();
 
-      foreach (var element in col) {
-        if (element is RevitLinkInstance ins) {
+      foreach (var element in col)
+        if (element is RevitLinkInstance ins)
+        {
+          var linkType = document.GetElement(ins.GetTypeId()) as RevitLinkType;
 
-          RevitLinkType linkType = document.GetElement(ins.GetTypeId()) as RevitLinkType;
-
-          if (linkType?.AttachmentType == AttachmentType.Attachment) {
-            nestedLinks.Add(ins);
-          }
+          if (linkType?.AttachmentType == AttachmentType.Attachment) nestedLinks.Add(ins);
         }
-      }
 
       // FindNestedLinks all user worksets 
 
@@ -56,9 +54,9 @@ namespace Revit.Domain.Ex_Old
 
       foreach (var nestedLink in nestedLinks)
       {
-          var nestedLinkWorkset = wsTable.GetWorkset(nestedLink.WorksetId);
-          nestedLinksWorksetNames.Add(nestedLinkWorkset.Name);
-          Debug.Write((string) nestedLinkWorkset.Name);
+        var nestedLinkWorkset = wsTable.GetWorkset(nestedLink.WorksetId);
+        nestedLinksWorksetNames.Add(nestedLinkWorkset.Name);
+        Debug.Write(nestedLinkWorkset.Name);
       }
 
       return nestedLinksWorksetNames;

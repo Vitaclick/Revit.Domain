@@ -12,13 +12,13 @@ namespace Revit.Domain.Databases
 {
   public class SheetConnector
   {
-    static readonly string[] _scopes = { SheetsService.Scope.Spreadsheets };
+    private static readonly string[] _scopes = {SheetsService.Scope.Spreadsheets};
     private readonly string _applicationName;
     private readonly string _spreadsheetId;
+    private GoogleCredential _googleCredential;
 
     private SheetsService _sheetService;
     private UserCredential _userCredential;
-    private GoogleCredential _googleCredential;
 
     public SheetConnector(string applicationname, string spreadsheetId)
     {
@@ -82,7 +82,8 @@ namespace Revit.Domain.Databases
     /// <param name="dropIfIncompleteRowThreshold">Remove data if length is lesser than given value.</param>
     /// <param name="returnNullIfEmptyCell">If cell is empty the parameter define how to response such case.</param>
     /// <returns>Cell list in raw Google Spreadsheet format. If no any data then it will return Null.</returns>
-    public IEnumerable<KeyValuePair<int, IList<CellData>>> ReadSheetData(string sheetName, string range, bool removeHeader = false,
+    public IEnumerable<KeyValuePair<int, IList<CellData>>> ReadSheetData(string sheetName, string range,
+      bool removeHeader = false,
       bool skipEmptyRows = false, bool includeGridData = true,
       int dropIfIncompleteRowThreshold = -1, bool returnNullIfEmptyCell = false)
     {
@@ -98,7 +99,6 @@ namespace Revit.Domain.Databases
 
       // Skip execution if cell range is emppty
       if (rowData != null && rowData.Count > 0)
-      {
         for (var i = 0; rowData.Count > i; i++)
         {
           if (removeHeader && i == 0)
@@ -112,10 +112,7 @@ namespace Revit.Domain.Databases
             if (skipEmptyRows)
               continue;
 
-            if (!returnNullIfEmptyCell)
-            {
-              rowValues = new List<CellData> { new CellData { FormattedValue = string.Empty } };
-            }
+            if (!returnNullIfEmptyCell) rowValues = new List<CellData> {new CellData {FormattedValue = string.Empty}};
           }
           else
           {
@@ -127,7 +124,6 @@ namespace Revit.Domain.Databases
           // Add result to output
           yield return new KeyValuePair<int, IList<CellData>>(i, rowValues);
         }
-      }
     }
 
     public void WriteData(string sheetName, string range, List<IList<object>> data)
@@ -138,7 +134,8 @@ namespace Revit.Domain.Databases
       valueRange.Values = data;
 
       var appendRequest = _sheetService.Spreadsheets.Values.Update(valueRange, _spreadsheetId, sheetRange);
-      appendRequest.ValueInputOption = SpreadsheetsResource.ValuesResource.UpdateRequest.ValueInputOptionEnum.USERENTERED;
+      appendRequest.ValueInputOption =
+        SpreadsheetsResource.ValuesResource.UpdateRequest.ValueInputOptionEnum.USERENTERED;
       var appendResponse = appendRequest.Execute();
     }
 
@@ -150,7 +147,6 @@ namespace Revit.Domain.Databases
       var deleteRequest = _sheetService.Spreadsheets.Values.Clear(requestBody, _spreadsheetId, sheetRange);
       var deleteResponse = deleteRequest.Execute();
     }
-
 
 
     // ------------- TEST ZONE ------------------

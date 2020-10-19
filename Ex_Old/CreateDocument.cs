@@ -6,10 +6,11 @@ namespace Revit.Domain.Ex_Old
   public static class CreateDocument
   {
     private const string TemplatePath = @"\\picompany.ru\pikp\lib\02_Revit\03_Шаблоны проектов\2017\PIK_BS.rte";
+
     public static void CreateFileByPath(Application app, string filePath, string templatePath = TemplatePath)
     {
-      Document doc = app.NewProjectDocument(templatePath);
-      
+      var doc = app.NewProjectDocument(templatePath);
+
       if (doc.CanEnableWorksharing() && filePath.IsValidRsnStringPath())
       {
         // TODO: not shure it can auto sort levels and grids

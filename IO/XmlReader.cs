@@ -2,9 +2,8 @@ namespace Revit.Domain.IO
 {
   public class XmlReader
   {
-    static void FromXmlFile(string filePath)
+    private static void FromXmlFile(string filePath)
     {
-
     }
   }
 }

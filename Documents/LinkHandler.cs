@@ -7,7 +7,7 @@ namespace Revit.Domain.Documents
 {
   public class LinkHandler
   {
-    public List<RevitLinkType> linkTypes = new List<RevitLinkType> { };
+    public List<RevitLinkType> linkTypes = new List<RevitLinkType>();
 
     public LinkHandler(Document doc)
     {
@@ -42,7 +42,6 @@ namespace Revit.Domain.Documents
     public void UnloadLinks()
     {
       foreach (var revitLinkType in linkTypes)
-      {
         try
         {
           if (revitLinkType.GetExternalFileReference().GetLinkedFileStatus() == LinkedFileStatus.Loaded)
@@ -53,8 +52,6 @@ namespace Revit.Domain.Documents
         {
           Debug.Write(e);
         }
-
-      }
     }
 
     public void ReloadUsedLinks()

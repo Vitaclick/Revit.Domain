@@ -8,12 +8,8 @@ namespace Revit.Domain.Extensions
     public static Document FindLinkDoc(this RevitLinkType rvtLinkType, Document parentDoc)
     {
       foreach (Document doc in parentDoc.Application.Documents)
-      {
         if (doc.IsValidObject && doc.Title == rvtLinkType.Name.Remove(rvtLinkType.Name.Length - 4))
-        {
           return doc;
-        }
-      }
       return null;
     }
 
@@ -44,10 +40,10 @@ namespace Revit.Domain.Extensions
         var site = linkDoc.ActiveProjectLocation;
 
         //site.SetProjectPosition(null, null);
-              
+
         //var locations = linkDoc.ProjectLocations;
         //var pos = linkDoc.SiteLocation;
-              
+
         //if (editor == app.Username || editor == string.Empty)
         //{
         //  var sharedSiteId = new LinkElementId(linkInstance.Id,
